@@ -1,0 +1,81 @@
+body {
+    background-color: aliceblue;
+}
+
+#calculator {
+    position: absolute;
+    background-color: white;
+
+    width: 30vmin;
+    height: fit-content;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
+    border-style: groove;
+    border-color: lavender;
+    border-width: 1vmin;
+}
+
+#io-screen {
+    display: block;
+    width: 27vmin;
+    padding: 0 0.5vmin;
+    height: 6vmin;
+    margin: 1vmin auto;
+    border-style: solid;
+    border-width: 0.1vmin;
+    font-size: 3vmin;
+    text-align: end;
+    text-indent: 0.5vmin;
+}
+
+#basic-operations {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+input[type="button"] {
+    font-family: sans-serif;
+    font-weight: 1000;
+    color: rgb(58, 42, 2);
+    background-color: ghostwhite;
+    border-color: lavender;
+    border-radius: 0.5vmin;
+    box-shadow: 0.1vmin 0.1vmin darkgray;
+}
+
+#numpad input[type="button"] {
+    box-sizing: unset;
+    width: 6vmin;
+    height: 3vmin;
+    margin: 1vmin 0;
+    font-size: 2vmin;
+    
+}
+
+#basic-operations input[type="button"]  {
+    box-sizing: unset;
+    width: 3vmin;
+    height: 2vmin;
+    margin: 0.5vh;
+}
+
+#numpad {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
+    margin: 0 1vmin;
+    padding: 1vmin 0;
+    padding-top: 0.5vmin;
+}
+
+#basic-operations{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 0 1vmin;
+}

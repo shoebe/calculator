@@ -1,5 +1,5 @@
-
 function verifyValidInput(stringInput) {
+    //needs more work
     let reg = /[0-9]|-|\+|\/|\*|\(|\)|\\/;
     return Boolean(stringInput.match(reg));
 }
@@ -117,13 +117,46 @@ function evaluateExpression(input) {
 }
 
 
-function handleInput(inputString) {
+function calculate(inputString) {
     const input = Array.from(inputString).filter((char) => char != " ");
     parseNumbers(input);
     evaluateExpression(input);
     const result = input[0];
     console.log(result);
+    return result;
 }
 
-let inputString = "21 + 52 + (2 + 3 * 6)**2 / 3";
-handleInput(inputString);
+function buttonOnClick() {
+    IOscreen.value += this.value;
+}
+
+
+const IOscreen = document.querySelector("#io-screen")
+
+const basicOperations = ["+", "-", "*", "/", "**", "(", ")", "="];
+const numPad = [".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].reverse();
+
+const basicOpNode = document.querySelector("#basic-operations");
+const numPadNode = document.querySelector("#numpad")
+
+for (let op of basicOperations){
+    const child = document.createElement("input");
+    child.type = "button";
+    child.value = op;
+    child.onclick = buttonOnClick;
+    basicOpNode.appendChild(child);
+}
+
+basicOpNode.lastChild.onclick = () => IOscreen.value = calculate(IOscreen.value);
+document.onkeypress = (event) => {
+    let char = event.which || event.keyCode;
+    if (char == 13) {IOscreen.value = calculate(IOscreen.value)}
+};
+
+for (let char of numPad) {
+    const child = document.createElement("input");
+    child.type = "button";
+    child.value = char;
+    child.onclick = buttonOnClick;
+    numPadNode.appendChild(child);
+}
