@@ -46,6 +46,18 @@ input[type="button"] {
     box-shadow: 0.1vmin 0.1vmin darkgray;
 }
 
+#important-functions {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1vmin;
+}
+
+#important-functions input[type="button"]{
+    margin:0.5vmin;
+    width: 4vmin;
+    height: 4vmin;
+}
+
 #numpad input[type="button"] {
     box-sizing: unset;
     width: 6vmin;
@@ -59,7 +71,7 @@ input[type="button"] {
     box-sizing: unset;
     width: 3vmin;
     height: 2vmin;
-    margin: 0.5vh;
+    margin: 0.5vmin;
 }
 
 #numpad {
@@ -79,3 +91,35 @@ input[type="button"] {
     justify-content: space-evenly;
     margin: 0 1vmin;
 }
+
+input[type="image"] {
+    width: 3vmin;
+}
+
+#history, #extra-functions, #history-button, #xtra-functions-button{
+    position: absolute;
+}
+
+#history-button {
+    transform: translate(-5vmin, 50%);
+}
+
+#xtra-functions-button {
+    transform: translate(31.5vmin, 70%) rotate(180deg);
+}
+
+#history {
+    transform: translate(-32vmin, 0);
+    display: none;
+    flex-direction: column;
+    width: 25vmin;
+    height:60vmin;
+}
+
+#extra-functions {
+    transform: translate(32.5vmin, 70%);
+    
+}
+
+
+

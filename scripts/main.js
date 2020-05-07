@@ -1,8 +1,26 @@
+/*
+ * Calculator functions
+ */
 function verifyValidInput(stringInput) {
     //needs more work
     let reg = /[0-9]|-|\+|\/|\*|\(|\)|\\/;
     return Boolean(stringInput.match(reg));
 }
+
+const FUNC = {
+    "sin": (number) => Math.sin(number),
+    "cos": (number) => Math.cos(number),
+    "tan": (number) => Math.tan(number),
+    "asin": (number) => Math.asin(number),
+    "acos": (number) => Math.acos(number),
+    "atan": (number) => Math.atan(number),
+    "log": (number) => Math.log10(number),
+    "ln": (number) => Math.log(number),
+}
+Object.freeze(FUNC)
+
+const test = "1+3+4+sin32";
+let testArr = Array.from(test);
 
 function parseNumbers(input){
     //add a non-number to force a check at end of array
@@ -28,6 +46,12 @@ function parseNumbers(input){
                 //reset i location because array changed length
                 i = startInd;
                 startInd = -1;
+            }
+        }
+        for(let func of Object.keys(FUNC)){
+            const snippet = input.slice(i,i+func.length)
+            if (snippet.join("") == func){
+                input.splice(i,func.length+1,func);
             }
         }
     }
@@ -56,6 +80,18 @@ function evaluateParanthesis(input){
         }
     }
     return input
+}
+
+
+function evaluateFunctions(input) {
+    for (let i = 0; i < input.length; i++) {
+        const func = FUNC[input[i]];
+        if (func){
+            const num = func(input[i+1]);
+            input.splice(i,2,num);
+        }
+    }
+    return input;
 }
 
 function evaluatePowers(input){
@@ -109,6 +145,7 @@ function evaluateOperation(input,operation, func) {
 
 function evaluateExpression(input) {
     evaluateParanthesis(input);
+    evaluateFunctions(input);
     evaluatePowers(input);
     evaluateMultiplication(input);
     evaluateOperation(input,"/",(num1, num2) => num1/num2);
@@ -126,18 +163,35 @@ function calculate(inputString) {
     return result;
 }
 
+/*
+ * Calculator functions end
+ */
+
+
 function buttonOnClick() {
     IOscreen.value += this.value;
 }
 
+function evaluate() {
+    IOscreen.value = calculate(IOscreen.value);
+    const element = document.createElement("input");
+    element.type = "button";
+    element.value = IOscreen.value;
+    element.onclick = buttonOnClick;
+    historyNode.insertBefore(element, historyNode.firstChild);
+    
+}
 
 const IOscreen = document.querySelector("#io-screen")
 
-const basicOperations = ["+", "-", "*", "/", "**", "(", ")", "="];
-const numPad = [".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].reverse();
+const basicOperations = ["+", "-", "*", "/", "**", "(", ")", "π"];
+const numPad = ["←", "0", ".", "1", "2", "3", "4", "5", "6", "7", "8", "9"].reverse();
+const importantFunctions = {"C": () => IOscreen.value = "",
+                            "=" : () => evaluate()}
 
 const basicOpNode = document.querySelector("#basic-operations");
-const numPadNode = document.querySelector("#numpad")
+const numPadNode = document.querySelector("#numpad");
+const importantFuncNode = document.querySelector("#important-functions");
 
 for (let op of basicOperations){
     const child = document.createElement("input");
@@ -147,12 +201,6 @@ for (let op of basicOperations){
     basicOpNode.appendChild(child);
 }
 
-basicOpNode.lastChild.onclick = () => IOscreen.value = calculate(IOscreen.value);
-document.onkeypress = (event) => {
-    let char = event.which || event.keyCode;
-    if (char == 13) {IOscreen.value = calculate(IOscreen.value)}
-};
-
 for (let char of numPad) {
     const child = document.createElement("input");
     child.type = "button";
@@ -160,3 +208,26 @@ for (let char of numPad) {
     child.onclick = buttonOnClick;
     numPadNode.appendChild(child);
 }
+//erase button
+numPadNode.lastChild.onclick = () => IOscreen.value = IOscreen.value.slice(0,-1);
+//evaluate on enter key press
+document.onkeypress = (event) => {
+    let char = event.which || event.keyCode;
+    if (char == 13) {evaluate()}
+};
+
+for (let val of Object.keys(importantFunctions)) {
+    const child = document.createElement("input");
+    child.type = "button";
+    child.value = val;
+    child.onclick = importantFunctions[val];
+    importantFuncNode.appendChild(child);
+}
+
+//History
+const historyNode = document.querySelector("#history");
+const historyToggler = document.querySelector("#history-button");
+historyToggler.onclick = () => {
+    historyToggler.style.transform = historyToggler.style.transform == "translate(-5vmin, 50%) rotate(180deg)" ? "translate(-5vmin, 50%)" : "translate(-5vmin, 50%) rotate(180deg)";
+    historyNode.style.display = historyNode.style.display == "flex" ? "none" : "flex";
+};

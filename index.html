@@ -6,12 +6,22 @@
         <link rel="stylesheet" href="styles/style.css">
     </head>
     <body>
-        <div id="calculator">
-            <input id="io-screen" type="text">
-            <div id="basic-operations"></div>
+        <div id="calculator" class="centered">
+            <div id="io-screen-div">
+                <input id="history-button" src="images/Arrow.png" type="image">
+                <div id="history"></div>
+                <input id="io-screen" type="text">
+            </div>
+            <div id="important-functions"></div>
+            <div id="operations-div">
+                <input id="xtra-functions-button" src="images/Arrow.png" type="image">
+                <div id="extra-functions" hidden></div>
+                <div id="basic-operations"></div>
+            </div>
+            
             <div id="numpad"></div>
-
         </div>
+        
     </body>
     <script src="scripts/main.js"></script>
 </html>
