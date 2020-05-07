@@ -16,7 +16,6 @@ const FUNC = {
     "atan": (number) => Math.atan(number),
     "log": (number) => Math.log10(number),
     "ln": (number) => Math.log(number),
-    "π" : (number) => Math.PI,
 }
 Object.freeze(FUNC)
 
@@ -32,21 +31,21 @@ function parseNumbers(input){
                 startInd = i;
             } 
         }
-        else {
-            if (startInd != -1) {
-                const snippet = input.slice(startInd, i).join("");
-                const number = parseFloat(snippet);
-                input.splice(startInd,snippet.length,number);
-                // in case of normal substraction, add "+"
-                if (snippet[0] == "-" && typeof(input[startInd-1]) == "number"){
-                    input.splice(startInd,0,"+");
-                    startInd += 1;
-                }
-                //reset i location because array changed length
-                i = startInd;
-                startInd = -1;
+        else if (startInd != -1) {
+            const snippet = input.slice(startInd, i).join("");
+            const number = parseFloat(snippet);
+            input.splice(startInd,snippet.length,number);
+            // in case of normal substraction, add "+"
+            if (snippet[0] == "-" && typeof(input[startInd-1]) == "number"){
+                input.splice(startInd,0,"+");
+                startInd += 1;
             }
+            //reset i location because array changed length
+            i = startInd;
+            startInd = -1;
         }
+        else if (input[i] == "π") input[i] = Math.PI;
+
         for(let func of Object.keys(FUNC)){
             const snippet = input.slice(i,i+func.length)
             if (snippet.join("") == func){
