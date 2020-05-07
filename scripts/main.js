@@ -16,11 +16,10 @@ const FUNC = {
     "atan": (number) => Math.atan(number),
     "log": (number) => Math.log10(number),
     "ln": (number) => Math.log(number),
+    "π" : (number) => Math.PI,
 }
 Object.freeze(FUNC)
 
-const test = "1+3+4+sin32";
-let testArr = Array.from(test);
 
 function parseNumbers(input){
     //add a non-number to force a check at end of array
@@ -51,7 +50,7 @@ function parseNumbers(input){
         for(let func of Object.keys(FUNC)){
             const snippet = input.slice(i,i+func.length)
             if (snippet.join("") == func){
-                input.splice(i,func.length+1,func);
+                input.splice(i,func.length,func);
             }
         }
     }
@@ -144,6 +143,7 @@ function evaluateOperation(input,operation, func) {
 
 
 function evaluateExpression(input) {
+    console.log(input);
     evaluateParanthesis(input);
     evaluateFunctions(input);
     evaluatePowers(input);
