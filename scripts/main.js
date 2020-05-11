@@ -7,17 +7,17 @@ function verifyValidInput(stringInput) {
     return Boolean(stringInput.match(reg));
 }
 
-const FUNC = {
+const FUNCS = {
     "sin": (number) => Math.sin(number),
     "cos": (number) => Math.cos(number),
     "tan": (number) => Math.tan(number),
+    "log": (number) => Math.log10(number),
     "asin": (number) => Math.asin(number),
     "acos": (number) => Math.acos(number),
     "atan": (number) => Math.atan(number),
-    "log": (number) => Math.log10(number),
     "ln": (number) => Math.log(number),
 }
-Object.freeze(FUNC)
+Object.freeze(FUNCS)
 
 
 function parseNumbers(input){
@@ -46,7 +46,7 @@ function parseNumbers(input){
         }
         else if (input[i] == "π") input[i] = Math.PI;
 
-        for(let func of Object.keys(FUNC)){
+        for(let func of Object.keys(FUNCS)){
             const snippet = input.slice(i,i+func.length)
             if (snippet.join("") == func){
                 input.splice(i,func.length,func);
@@ -83,7 +83,7 @@ function evaluateParanthesis(input){
 
 function evaluateFunctions(input) {
     for (let i = 0; i < input.length; i++) {
-        const func = FUNC[input[i]];
+        const func = FUNCS[input[i]];
         if (func){
             const num = func(input[i+1]);
             input.splice(i,2,num);
@@ -188,7 +188,7 @@ function addToHistoryNode(array) {
     /* index 0 is text before calculation and index 1 is after*/
     const finalResult=  [document.createElement("h2"),document.createElement("h2")];
     const finalResultText = array.pop();
-    finalResult[0].textContent = finalResultText[0];
+    finalResult[0].textContent = "= " + finalResultText[0];
     finalResult[0].value = finalResultText[0];
     finalResult[1].textContent = ">>> " + finalResultText[1];
     finalResult[1].value = finalResultText[1];
@@ -198,12 +198,12 @@ function addToHistoryNode(array) {
         historyNode.insertBefore(elem,historyNode.firstChild);
     } 
     array = array.reverse();
-    for (let intemediaryCalc of array){
+    for (let intermediaryCalc of array){
         const result = [document.createElement("h3"),document.createElement("h3")]
-        result[0].textContent = intemediaryCalc[0];
-        result[0].value = intemediaryCalc[0];
-        result[1].textContent = ">>> " + intemediaryCalc[1];
-        result[1].value = intemediaryCalc[1];
+        result[0].textContent = "= " + intermediaryCalc[0];
+        result[0].value = intermediaryCalc[0];
+        result[1].textContent = ">>> " + intermediaryCalc[1];
+        result[1].value = intermediaryCalc[1];
         result[1].classList.add("results");
         for (let elem of result.reverse()){
             elem.onclick = buttonOnClick;
@@ -261,6 +261,24 @@ const historyBoxNode = document.querySelector("#history-box");
 const historyNode = document.querySelector("#history");
 const historyToggler = document.querySelector("#history-button");
 historyToggler.onclick = () => {
-    historyToggler.style.transform = historyToggler.style.transform == "translate(-5vmin, 50%) rotate(180deg)" ? "translate(-5vmin, 50%)" : "translate(-5vmin, 50%) rotate(180deg)";
+    historyToggler.style.transform = historyToggler.style.transform == "translate(-5vmin, 1.5vmin) rotate(180deg)" ? "translate(-5vmin, 1.5vmin)" : "translate(-5vmin, 1.5vmin) rotate(180deg)";
     historyBoxNode.style.display = historyBoxNode.style.display == "flex" ? "none" : "flex";
 };
+
+
+
+//extra functions
+const extraFuncBoxNode = document.querySelector("#extra-functions-box");
+const extraFuncToggler = document.querySelector("#extra-functions-button");
+extraFuncToggler.onclick = () => {
+    extraFuncToggler.style.transform = extraFuncToggler.style.transform == "translate(31.5vmin, 2vmin)" ? "translate(31.5vmin, 2vmin) rotate(180deg)" : "translate(31.5vmin, 2vmin)";
+    extraFuncBoxNode.style.display = extraFuncBoxNode.style.display == "flex" ? "none" : "flex";
+};
+
+for (let func of Object.keys(FUNCS)){
+    const child = document.createElement("input");
+    child.type = "button";
+    child.value = func;
+    child.onclick = buttonOnClick;
+    extraFuncBoxNode.appendChild(child);
+}
