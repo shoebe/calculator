@@ -142,13 +142,15 @@ function evaluateOperation(input,operation, func) {
 
 
 function evaluateExpression(input) {
-    console.log(input);
+    const origInput = input.join("");
     evaluateParanthesis(input);
     evaluateFunctions(input);
     evaluatePowers(input);
     evaluateMultiplication(input);
     evaluateOperation(input,"/",(num1, num2) => num1/num2);
     evaluateOperation(input,"+",(num1, num2) => num1+num2);
+    mostRecentCalculations.push([origInput, input.join("")])
+    console.log(`orgiInput = ${origInput}, input = ${input}`)
     return input;
 }
 
@@ -177,9 +179,39 @@ function evaluate() {
     element.type = "button";
     element.value = IOscreen.value;
     element.onclick = buttonOnClick;
-    historyNode.insertBefore(element, historyNode.firstChild);
+    addToHistoryNode(mostRecentCalculations);
+    mostRecentCalculations = [];
     
 }
+
+function addToHistoryNode(array) {
+    /* index 0 is text before calculation and index 1 is after*/
+    const finalResult=  [document.createElement("h2"),document.createElement("h2")];
+    const finalResultText = array.pop();
+    finalResult[0].textContent = finalResultText[0];
+    finalResult[0].value = finalResultText[0];
+    finalResult[1].textContent = ">>> " + finalResultText[1];
+    finalResult[1].value = finalResultText[1];
+    finalResult[1].classList.add("results");
+    for (let elem of finalResult.reverse()){
+        elem.onclick = buttonOnClick;
+        historyNode.insertBefore(elem,historyNode.firstChild);
+    } 
+    array = array.reverse();
+    for (let intemediaryCalc of array){
+        const result = [document.createElement("h3"),document.createElement("h3")]
+        result[0].textContent = intemediaryCalc[0];
+        result[0].value = intemediaryCalc[0];
+        result[1].textContent = ">>> " + intemediaryCalc[1];
+        result[1].value = intemediaryCalc[1];
+        result[1].classList.add("results");
+        for (let elem of result.reverse()){
+            elem.onclick = buttonOnClick;
+            historyNode.insertBefore(elem,historyNode.firstChild);
+        }
+    }
+}
+
 
 const IOscreen = document.querySelector("#io-screen")
 
@@ -224,9 +256,11 @@ for (let val of Object.keys(importantFunctions)) {
 }
 
 //History
+let mostRecentCalculations=[];
+const historyBoxNode = document.querySelector("#history-box");
 const historyNode = document.querySelector("#history");
 const historyToggler = document.querySelector("#history-button");
 historyToggler.onclick = () => {
     historyToggler.style.transform = historyToggler.style.transform == "translate(-5vmin, 50%) rotate(180deg)" ? "translate(-5vmin, 50%)" : "translate(-5vmin, 50%) rotate(180deg)";
-    historyNode.style.display = historyNode.style.display == "flex" ? "none" : "flex";
+    historyBoxNode.style.display = historyBoxNode.style.display == "flex" ? "none" : "flex";
 };

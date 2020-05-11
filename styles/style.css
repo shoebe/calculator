@@ -1,5 +1,6 @@
 body {
     background-color: aliceblue;
+    font-family: sans-serif;
 }
 
 #calculator {
@@ -37,7 +38,6 @@ body {
 }
 
 input[type="button"] {
-    font-family: sans-serif;
     font-weight: 1000;
     color: rgb(58, 42, 2);
     background-color: ghostwhite;
@@ -96,7 +96,7 @@ input[type="image"] {
     width: 3vmin;
 }
 
-#history, #extra-functions, #history-button, #xtra-functions-button{
+#history-box, #extra-functions, #history-button, #xtra-functions-button{
     position: absolute;
 }
 
@@ -108,18 +108,58 @@ input[type="image"] {
     transform: translate(31.5vmin, 70%) rotate(180deg);
 }
 
-#history {
-    transform: translate(-32vmin, 0);
-    display: none;
+#history-box {
+    transform: translate(-27.5vmin, 0);
+    display: none; /*flex*/
     flex-direction: column;
-    width: 25vmin;
-    height:60vmin;
+    align-items: center;
+    width: 20vmin;
+    height:40vmin;
+    border-style: groove;
+    border-color: lavender;
+    border-width: 0.7vmin;
+    overflow: hidden;
 }
 
 #extra-functions {
     transform: translate(32.5vmin, 70%);
-    
 }
+
+#history-title {
+    margin: 0;
+    padding-top: 0.5vmin;
+    font-size: 3vmin;
+    text-decoration: underline overline;
+}
+
+#history {
+    margin-top: 1vmin;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-y: auto;
+    width:18vmin;
+    height:40vmin;
+}
+
+/*final results*/
+h2 {
+    font-size: 2vmin;
+    margin:0;
+}
+/*interim calculations*/
+h3 {
+    font-size: 1.7vmin;
+    margin:0;
+    color: dimgray;
+}
+
+.results {
+    font-style: italic;
+    text-decoration: underline;
+}
+
+
 
 
 
