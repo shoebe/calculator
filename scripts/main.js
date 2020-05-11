@@ -150,7 +150,6 @@ function evaluateExpression(input) {
     evaluateOperation(input,"/",(num1, num2) => num1/num2);
     evaluateOperation(input,"+",(num1, num2) => num1+num2);
     mostRecentCalculations.push([origInput, input.join("")])
-    console.log(`orgiInput = ${origInput}, input = ${input}`)
     return input;
 }
 
@@ -160,7 +159,6 @@ function calculate(inputString) {
     parseNumbers(input);
     evaluateExpression(input);
     const result = input[0];
-    console.log(result);
     return result;
 }
 
